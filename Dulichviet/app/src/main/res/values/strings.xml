@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Du Lịch Việt</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="action_search">Search</string>
+    <string name="search_hint">Tìm kiếm</string>
+    <string name="addrees">Địa chỉ :</string>
+    <string name="infor">Giới thiệu :</string>
+    <string name="facebook_app_id">981496585241676</string>
+    <string name="key_map">AIzaSyDI0WeAAkjjuQJ1L5XUKPRI-nm1etwxZEU</string>
+</resources>

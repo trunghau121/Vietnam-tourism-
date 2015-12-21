@@ -1,0 +1,8 @@
+package com.example.hau.dulichviet.Interfaces;
+
+/**
+ * Created by HAU on 12/5/2015.
+ */
+public interface EventNetWork {
+    public  void EnableNetWork(int enable);
+}
