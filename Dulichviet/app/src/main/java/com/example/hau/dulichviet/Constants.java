@@ -1,9 +1,10 @@
-package com.example.hau.dulichviet.Models;
+package com.example.hau.dulichviet;
 
-
-public class Constant {
-
-    public static final String HOST="http://where.beliat.com";
+/**
+ * Created by TRUNGHAU on 4/24/2016.
+ */
+public class Constants {
+    public  static String URL_BELIAT = "http://where.beliat.com";
     public static final String DRAWABLE="drawable";
     public static final String CATEGORY="category";
     public static final String DETAIL="detail";
@@ -31,6 +32,4 @@ public class Constant {
     public static final String CATEGORY15="15";
     public static final String CATEGORY16="16";
     public static final String CATEGORY17="17";
-
-
 }

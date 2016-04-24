@@ -1,13 +1,9 @@
 package com.example.hau.dulichviet;
 
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,29 +12,25 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.example.hau.dulichviet.Broadcast.ListenNetWork;
 import com.example.hau.dulichviet.Fragments.fragment_tour;
-import com.example.hau.dulichviet.Interfaces.EventNetWork;
 import com.example.hau.dulichviet.Interfaces.Resourceble;
 import com.example.hau.dulichviet.Models.DataCategory;
 import com.example.hau.dulichviet.Models.DataPlace;
 import com.example.hau.dulichviet.Models.SlideMenuItem;
 import com.example.hau.dulichviet.Network.Networking;
-import com.example.hau.dulichviet.Utils.PlaceApi;
 import com.example.hau.dulichviet.Utils.ViewAnimator;
+import com.example.hau.dulichviet.data.api.ServerApi;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.InjectView;
 import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 
 public class MainActivity extends AppCompatActivity implements ViewAnimator.ViewAnimatorListener {
@@ -51,60 +43,60 @@ public class MainActivity extends AppCompatActivity implements ViewAnimator.View
     public static ArrayList<DataPlace.Place> arrayPlace = new ArrayList<DataPlace.Place>();
     public static ArrayList<DataCategory.Category> arrayCategory = new ArrayList<DataCategory.Category>();
     MaterialDialog dialog;
+    private ServerApi serverApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        serverApi = Dependencies.getServerApi();
         getPlaceFromService();
     }
 
     private void getPlaceFromService() {
 
-          //  if(Networking.isCheckConnect(this)) {
-                dialog = new MaterialDialog.Builder(this)
-                        .title(null)
-                        .content("Đang tải dữ liệu ...")
-                        .progress(true, 0)
-                        .show();
-                PlaceApi placeApi = new PlaceApi();
-                placeApi.category().getCategory(new Callback<DataCategory>() {
-                    @Override
-                    public void success(DataCategory dataCategory, Response response) {
-                        arrayCategory = dataCategory.getData();
-                    }
+        if (Networking.isCheckConnect(this)) {
+            dialog = new MaterialDialog.Builder(this)
+                    .title(null)
+                    .content("Đang tải dữ liệu ...")
+                    .progress(true, 0)
+                    .show();
+            serverApi.getCategory()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(dataCategory -> {
+                                arrayCategory = dataCategory.getData();
+                                dialog.dismiss();
+                            }, throwable -> {
+                                Timber.d(throwable.getMessage());
+                                dialog.dismiss();
+                            }
+                    );
+            serverApi.getService()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(dataPlace -> {
+                                arrayPlace = dataPlace.getData();
+                                setActionBar();
+                                comitFragment(1);
+                                createMenuList();
+                                dialog.dismiss();
+                            }
+                            , throwable -> {
+                                Timber.d(throwable.getMessage());
+                                dialog.dismiss();
+                            }
+                    );
 
-                    @Override
-                    public void failure(RetrofitError error) {
-
-                    }
-                });
-                placeApi.service().getPlace(new Callback<DataPlace>() {
-                    @Override
-                    public void success(DataPlace dataPlace, Response response) {
-                        arrayPlace = dataPlace.getData();
-                        dialog.dismiss();
-                        setActionBar();
-                        comitFragment(1);
-                        createMenuList();
-
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-
-                    }
-
-                });
-//            }else{
-//                new MaterialDialog.Builder(this)
-//                        .content("Không có internet.Vui lòng kiểm tra lại!")
-//                        .positiveText("OK")
-//                        .contentColor(Color.BLACK)
-//                        .positiveColor(Color.BLUE)
-//                        .backgroundColor(Color.WHITE)
-//                        .show();
-//            }
+        } else {
+            new MaterialDialog.Builder(this)
+                    .content("Không có internet.Vui lòng kiểm tra lại!")
+                    .positiveText("OK")
+                    .contentColor(Color.BLACK)
+                    .positiveColor(Color.BLUE)
+                    .backgroundColor(Color.WHITE)
+                    .show();
+        }
     }
 
     private void createMenuList() {
@@ -173,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements ViewAnimator.View
         drawerLayout.setDrawerListener(drawerToggle);
         drawerToggle.syncState();
     }
-
 
 
     @Override

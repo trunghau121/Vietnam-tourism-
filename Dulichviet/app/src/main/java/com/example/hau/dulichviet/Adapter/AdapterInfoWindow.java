@@ -11,8 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.example.hau.dulichviet.Models.Constant;
+import com.example.hau.dulichviet.Constants;
 import com.example.hau.dulichviet.Models.DataPlace;
 import com.example.hau.dulichviet.R;
 import com.google.android.gms.maps.GoogleMap;
@@ -52,7 +51,7 @@ public class AdapterInfoWindow implements GoogleMap.InfoWindowAdapter {
     public View getInfoContents(Marker marker) {
         View v = this.context.getLayoutInflater().inflate(R.layout.custom_infowindow, null);
         MyViewHolder holder =new MyViewHolder(v);
-        holder.Load(Constant.PICASSO + place.getImage_id() + Constant.ORIGIN0);
+        holder.Load(Constants.PICASSO + place.getImage_id() + Constants.ORIGIN0);
         holder.txtTitle.setText(place.getName().toUpperCase());
         String address = place.getAddress();
         holder.txtLocation.setText(Html.fromHtml(address));

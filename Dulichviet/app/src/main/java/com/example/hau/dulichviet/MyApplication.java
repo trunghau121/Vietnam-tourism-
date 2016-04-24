@@ -11,6 +11,8 @@ import android.util.Log;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import timber.log.Timber;
+
 /**
  * Created by HAU on 12/3/2015.
  */
@@ -19,6 +21,10 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Dependencies.init();
+        if (BuildConfig.DEBUG){
+            Timber.plant(new Timber.DebugTree());
+        }
         printHashKey();
     }
 

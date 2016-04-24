@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.hau.dulichviet.Models.Constant;
 import com.example.hau.dulichviet.Models.DataPlace;
 
 import butterknife.ButterKnife;
@@ -62,7 +61,7 @@ public class SearchTour extends AppCompatActivity implements View.OnClickListene
     }
 
     private void setData() {
-        Glide.with(this).load(Constant.PICASSO + place.getImage_id() + Constant.ORIGIN1).override(width, height).centerCrop().into(ivTour);
+        Glide.with(this).load(Constants.PICASSO + place.getImage_id() + Constants.ORIGIN1).override(width, height).centerCrop().into(ivTour);
         txtName.setText(place.getName().toUpperCase());
         String address = place.getAddress();
         txtAddress.setText(Html.fromHtml(address));
