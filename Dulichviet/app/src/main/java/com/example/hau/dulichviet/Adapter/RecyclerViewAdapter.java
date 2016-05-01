@@ -1,4 +1,4 @@
-package com.example.hau.dulichviet.Adapter;
+package com.example.hau.dulichviet.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -13,14 +13,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.hau.dulichviet.Constants;
-import com.example.hau.dulichviet.Interfaces.OnClickItem;
-import com.example.hau.dulichviet.Models.DataPlace;
+import com.example.hau.dulichviet.interfaces.OnClickItem;
+import com.example.hau.dulichviet.models.DataPlace;
 import com.example.hau.dulichviet.R;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by HAU on 11/16/2015.
@@ -73,24 +73,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @InjectView(R.id.tvName)
+        @Bind(R.id.tvName)
         TextView txtName;
-        @InjectView(R.id.tvContent)
+        @Bind(R.id.tvContent)
         TextView txtContent;
-        @InjectView(R.id.tvAddress)
+        @Bind(R.id.tvAddress)
         TextView txtAddress;
-        @InjectView(R.id.ivTour)
+        @Bind(R.id.ivTour)
         ImageView ivTour;
-        @InjectView(R.id.btnMap)
+        @Bind(R.id.btnMap)
         ImageButton btnMap;
-        @InjectView(R.id.btnShare)
+        @Bind(R.id.btnShare)
         ImageButton btnShare;
-        @InjectView(R.id.btnReadMore)
+        @Bind(R.id.btnReadMore)
         Button btnReadMore;
 
         public MyViewHolder(View v) {
             super(v);
-            ButterKnife.inject(this, v);
+            ButterKnife.bind(this, v);
             btnMap.setOnClickListener(this);
             btnShare.setOnClickListener(this);
             btnReadMore.setOnClickListener(this);

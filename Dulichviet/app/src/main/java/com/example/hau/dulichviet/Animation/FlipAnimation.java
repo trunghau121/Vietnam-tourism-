@@ -1,4 +1,4 @@
-package com.example.hau.dulichviet.Animation;
+package com.example.hau.dulichviet.animation;
 
 import android.graphics.Camera;
 import android.graphics.Matrix;

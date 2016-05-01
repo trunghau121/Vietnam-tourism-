@@ -1,6 +1,7 @@
 package com.example.hau.dulichviet.ui.base;
 
 import android.app.LauncherActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.example.hau.dulichviet.R;
 
@@ -9,7 +10,7 @@ import butterknife.ButterKnife;
 /**
  * Created by TRUNGHAU on 5/1/2016.
  */
-public class BaseActivity extends LauncherActivity{
+public class BaseActivity extends AppCompatActivity{
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);

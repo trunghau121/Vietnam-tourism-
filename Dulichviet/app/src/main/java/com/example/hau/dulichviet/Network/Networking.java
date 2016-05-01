@@ -1,4 +1,4 @@
-package com.example.hau.dulichviet.Network;
+package com.example.hau.dulichviet.network;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

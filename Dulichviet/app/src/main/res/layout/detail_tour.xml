@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:background="#ffffff"
-    tools:context=".MainDetail">
+    tools:context=".ui.detail_tour.MainDetail">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"

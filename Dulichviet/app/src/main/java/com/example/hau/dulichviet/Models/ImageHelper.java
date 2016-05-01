@@ -1,4 +1,4 @@
-package com.example.hau.dulichviet.Models;
+package com.example.hau.dulichviet.models;
 
 import com.example.hau.dulichviet.R;
 

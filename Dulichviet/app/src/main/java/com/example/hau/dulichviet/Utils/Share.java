@@ -1,4 +1,4 @@
-package com.example.hau.dulichviet.Utils;
+package com.example.hau.dulichviet.utils;
 
 import android.app.Activity;
 import android.content.Context;

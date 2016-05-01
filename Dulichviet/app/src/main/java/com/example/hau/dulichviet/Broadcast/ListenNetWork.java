@@ -1,13 +1,12 @@
-package com.example.hau.dulichviet.Broadcast;
+package com.example.hau.dulichviet.broadcast;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.widget.Toast;
 
-import com.example.hau.dulichviet.Interfaces.EventNetWork;
-import com.example.hau.dulichviet.Network.Networking;
+import com.example.hau.dulichviet.interfaces.EventNetWork;
+import com.example.hau.dulichviet.network.Networking;
 
 /**
  * Created by HAU on 12/5/2015.

@@ -1,9 +1,8 @@
-package com.example.hau.dulichviet;
+package com.example.hau.dulichviet.ui.search_tour;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,28 +13,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.hau.dulichviet.Models.DataPlace;
+import com.example.hau.dulichviet.Constants;
+import com.example.hau.dulichviet.models.DataPlace;
+import com.example.hau.dulichviet.R;
+import com.example.hau.dulichviet.ui.base.BaseActivity;
+import com.example.hau.dulichviet.ui.detail_tour.MainDetail;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * Created by HAU on 12/2/2015.
  */
-public class SearchTour extends AppCompatActivity implements View.OnClickListener {
-    @InjectView(R.id.tvName)
+public class SearchTour extends BaseActivity implements View.OnClickListener {
+    @Bind(R.id.tvName)
     TextView txtName;
-    @InjectView(R.id.tvContent)
+    @Bind(R.id.tvContent)
     TextView txtContent;
-    @InjectView(R.id.tvAddress)
+    @Bind(R.id.tvAddress)
     TextView txtAddress;
-    @InjectView(R.id.ivTour)
+    @Bind(R.id.ivTour)
     ImageView ivTour;
-    @InjectView(R.id.btnMap)
+    @Bind(R.id.btnMap)
     ImageButton btnMap;
-    @InjectView(R.id.btnShare)
+    @Bind(R.id.btnShare)
     ImageButton btnShare;
-    @InjectView(R.id.btnReadMore)
+    @Bind(R.id.btnReadMore)
     Button btnReadMore;
     DataPlace.Place place;
     private float scale;
@@ -46,7 +48,6 @@ public class SearchTour extends AppCompatActivity implements View.OnClickListene
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom_list_tour);
-        ButterKnife.inject(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(false);
         scale = this.getResources().getDisplayMetrics().density;

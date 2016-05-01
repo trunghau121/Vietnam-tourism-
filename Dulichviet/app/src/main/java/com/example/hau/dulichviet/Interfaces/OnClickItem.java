@@ -1,4 +1,4 @@
-package com.example.hau.dulichviet.Interfaces;
+package com.example.hau.dulichviet.interfaces;
 
 import android.view.View;
 

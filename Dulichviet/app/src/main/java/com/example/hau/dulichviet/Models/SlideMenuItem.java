@@ -1,7 +1,7 @@
-package com.example.hau.dulichviet.Models;
+package com.example.hau.dulichviet.models;
 
 
-import com.example.hau.dulichviet.Interfaces.Resourceble;
+import com.example.hau.dulichviet.interfaces.Resourceble;
 
 /**
  * Created by Konstantin on 23.12.2014.

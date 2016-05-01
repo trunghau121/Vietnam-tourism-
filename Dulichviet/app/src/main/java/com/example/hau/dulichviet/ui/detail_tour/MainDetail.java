@@ -1,4 +1,4 @@
-package com.example.hau.dulichviet;
+package com.example.hau.dulichviet.ui.detail_tour;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -17,10 +17,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.hau.dulichviet.Adapter.AdapterSliderImage;
-import com.example.hau.dulichviet.Models.DataPlace;
-import com.example.hau.dulichviet.Models.ParseHtml;
-import com.example.hau.dulichviet.Utils.Share;
+import com.example.hau.dulichviet.adapter.AdapterSliderImage;
+import com.example.hau.dulichviet.ui.map_tour.MapTour;
+import com.example.hau.dulichviet.models.DataPlace;
+import com.example.hau.dulichviet.models.ParseHtml;
+import com.example.hau.dulichviet.R;
+import com.example.hau.dulichviet.utils.Share;
 import com.facebook.CallbackManager;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -30,38 +32,38 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by HAU on 11/28/2015.
  */
 public class MainDetail extends AppCompatActivity implements View.OnClickListener {
-    @InjectView(R.id.tvAddressDetail)
+    @Bind(R.id.tvAddressDetail)
     TextView tvAddressDetail;
-    @InjectView(R.id.tvNameDetail)
+    @Bind(R.id.tvNameDetail)
     TextView tvNameDetail;
-    @InjectView(R.id.tvContentDetail)
+    @Bind(R.id.tvContentDetail)
     TextView tvContentDetail;
-    @InjectView(R.id.tvGoto)
+    @Bind(R.id.tvGoto)
     TextView tvGoto;
-    @InjectView(R.id.tb_main)
+    @Bind(R.id.tb_main)
     Toolbar tbDetail;
-    @InjectView(R.id.ll_goto)
+    @Bind(R.id.ll_goto)
     LinearLayout llGoto;
-    @InjectView(R.id.collapsing_toolbar)
+    @Bind(R.id.collapsing_toolbar)
     CollapsingToolbarLayout toolbarLayout;
-    @InjectView(R.id.nsvDetail)
+    @Bind(R.id.nsvDetail)
     NestedScrollView nsvDetail;
-    @InjectView(R.id.fab)
+    @Bind(R.id.fab)
     FloatingActionMenu fab;
-    @InjectView(R.id.fabShare)
+    @Bind(R.id.fabShare)
     FloatingActionButton fabShare;
-    @InjectView(R.id.fabMap)
+    @Bind(R.id.fabMap)
     FloatingActionButton fabMap;
-    @InjectView(R.id.indicator)
+    @Bind(R.id.indicator)
     CirclePageIndicator indicator;
-    @InjectView(R.id.pager)
+    @Bind(R.id.pager)
     ViewPager mPager;
     DataPlace.Place place;
     private static int currentPage = 0;
@@ -74,7 +76,7 @@ public class MainDetail extends AppCompatActivity implements View.OnClickListene
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_tour);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         if (getIntent() != null) {
             if (getIntent().getBundleExtra("bundle") != null) {
                 place = (DataPlace.Place) getIntent().getBundleExtra("bundle").getSerializable("data");

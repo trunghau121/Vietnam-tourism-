@@ -1,19 +1,17 @@
-package com.example.hau.dulichviet.Adapter;
+package com.example.hau.dulichviet.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.hau.dulichviet.Models.DataPlace;
+import com.example.hau.dulichviet.models.DataPlace;
 import com.example.hau.dulichviet.R;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.example.hau.dulichviet.Image;
+package com.example.hau.dulichviet.image;
 
 import android.content.Context;
 import android.graphics.Bitmap;

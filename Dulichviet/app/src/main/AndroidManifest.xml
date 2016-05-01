@@ -40,19 +40,19 @@
         <provider android:authorities="com.facebook.app.FacebookContentProvider981496585241676"
             android:name="com.facebook.FacebookContentProvider"
             android:exported="true"/>
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainDetail"></activity>
-        <activity android:name=".MapTour"></activity>
+        <activity android:name=".ui.detail_tour.MainDetail"></activity>
+        <activity android:name=".ui.map_tour.MapTour"></activity>
         <activity
             android:theme="@style/AppTheme2"
             android:label="@string/app_name"
-            android:name=".SearchTour"></activity>
+            android:name=".ui.search_tour.SearchTour"></activity>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

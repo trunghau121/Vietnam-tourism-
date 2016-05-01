@@ -1,18 +1,16 @@
-package com.example.hau.dulichviet.Utils;
+package com.example.hau.dulichviet.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 
-import com.example.hau.dulichviet.Animation.FlipAnimation;
-import com.example.hau.dulichviet.Interfaces.Resourceble;
+import com.example.hau.dulichviet.animation.FlipAnimation;
+import com.example.hau.dulichviet.interfaces.Resourceble;
 import com.example.hau.dulichviet.R;
 
 import java.util.ArrayList;

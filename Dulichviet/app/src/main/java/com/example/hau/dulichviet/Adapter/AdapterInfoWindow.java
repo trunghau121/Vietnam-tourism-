@@ -1,4 +1,4 @@
-package com.example.hau.dulichviet.Adapter;
+package com.example.hau.dulichviet.adapter;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.hau.dulichviet.Constants;
-import com.example.hau.dulichviet.Models.DataPlace;
+import com.example.hau.dulichviet.models.DataPlace;
 import com.example.hau.dulichviet.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
@@ -21,8 +21,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by HAU on 12/9/2015.
@@ -60,23 +60,23 @@ public class AdapterInfoWindow implements GoogleMap.InfoWindowAdapter {
         return v;
     }
     class MyViewHolder implements View.OnClickListener {
-        @InjectView(R.id.tvTitle)
+        @Bind(R.id.tvTitle)
         TextView txtTitle;
-        @InjectView(R.id.tvDetail)
+        @Bind(R.id.tvDetail)
         TextView txtDetail;
-        @InjectView(R.id.tvLocation)
+        @Bind(R.id.tvLocation)
         TextView txtLocation;
-        @InjectView(R.id.iv_Image)
+        @Bind(R.id.iv_Image)
         ImageView ivTour;
-        @InjectView(R.id.ib_navigation)
+        @Bind(R.id.ib_navigation)
         ImageButton ibNavigation;
-        @InjectView(R.id.ib_share)
+        @Bind(R.id.ib_share)
         ImageButton ibShare;
-        @InjectView(R.id.btMore)
+        @Bind(R.id.btMore)
         Button btMore;
 
         public MyViewHolder(View v) {
-            ButterKnife.inject(this, v);
+            ButterKnife.bind(this, v);
             ibNavigation.setOnClickListener(this);
             ibShare.setOnClickListener(this);
             btMore.setOnClickListener(this);

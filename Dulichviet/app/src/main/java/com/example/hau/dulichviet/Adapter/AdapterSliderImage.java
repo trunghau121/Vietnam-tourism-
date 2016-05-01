@@ -1,4 +1,4 @@
-package com.example.hau.dulichviet.Adapter;
+package com.example.hau.dulichviet.adapter;
 
 import android.content.Context;
 import android.os.Parcelable;

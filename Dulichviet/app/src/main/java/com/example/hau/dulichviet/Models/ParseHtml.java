@@ -1,6 +1,4 @@
-package com.example.hau.dulichviet.Models;
-
-import android.util.Log;
+package com.example.hau.dulichviet.models;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

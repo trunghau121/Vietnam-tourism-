@@ -1,4 +1,4 @@
-package com.example.hau.dulichviet;
+package com.example.hau.dulichviet.ui.map_tour;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -8,9 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.hau.dulichviet.Adapter.AdapterInfoWindow;
-import com.example.hau.dulichviet.Models.DataPlace;
-import com.example.hau.dulichviet.Models.ImageHelper;
+import com.example.hau.dulichviet.adapter.AdapterInfoWindow;
+import com.example.hau.dulichviet.models.DataPlace;
+import com.example.hau.dulichviet.models.ImageHelper;
+import com.example.hau.dulichviet.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -19,11 +20,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.Map;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by HAU on 12/6/2015.

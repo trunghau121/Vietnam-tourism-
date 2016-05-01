@@ -1,4 +1,4 @@
-package com.example.hau.dulichviet.Interfaces;
+package com.example.hau.dulichviet.interfaces;
 
 /**
  * Created by HAU on 12/5/2015.

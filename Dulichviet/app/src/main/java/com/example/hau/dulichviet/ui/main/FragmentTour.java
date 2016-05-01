@@ -1,55 +1,44 @@
-package com.example.hau.dulichviet.Fragments;
+package com.example.hau.dulichviet.ui.main;
 
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.MatrixCursor;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.example.hau.dulichviet.Adapter.AdapterAutoComplete;
-import com.example.hau.dulichviet.Adapter.RecyclerViewAdapter;
-import com.example.hau.dulichviet.Interfaces.OnClickItem;
-import com.example.hau.dulichviet.MainActivity;
-import com.example.hau.dulichviet.MainDetail;
-import com.example.hau.dulichviet.MapTour;
-import com.example.hau.dulichviet.Models.DataPlace;
-import com.example.hau.dulichviet.Network.Networking;
+import com.example.hau.dulichviet.adapter.AdapterAutoComplete;
+import com.example.hau.dulichviet.adapter.RecyclerViewAdapter;
+import com.example.hau.dulichviet.interfaces.OnClickItem;
+import com.example.hau.dulichviet.ui.base.BaseFragment;
+import com.example.hau.dulichviet.ui.detail_tour.MainDetail;
+import com.example.hau.dulichviet.ui.map_tour.MapTour;
+import com.example.hau.dulichviet.models.DataPlace;
 import com.example.hau.dulichviet.R;
-import com.example.hau.dulichviet.SearchTour;
-import com.example.hau.dulichviet.Utils.Share;
+import com.example.hau.dulichviet.ui.search_tour.SearchTour;
+import com.example.hau.dulichviet.utils.Share;
 
 import java.util.ArrayList;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.InjectViews;
+import butterknife.Bind;
 
 
 /**
  * Created by HAU on 10/3/2015.
  */
-public class fragment_tour extends Fragment implements OnClickItem {
-    @InjectView(R.id.rvTour)
+public class FragmentTour extends BaseFragment implements OnClickItem {
+    @Bind(R.id.rvTour)
     RecyclerView rvTour;
     private ArrayList<DataPlace.Place> arrayPlace = new ArrayList<DataPlace.Place>();
     private ArrayList<DataPlace.Place> list = new ArrayList<DataPlace.Place>();
@@ -60,10 +49,9 @@ public class fragment_tour extends Fragment implements OnClickItem {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_main, container, false);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-        ButterKnife.inject(this, v);
         autoComplete = new AdapterAutoComplete(getActivity(), c);
         int category_id = getArguments().getInt("category_id");
 
@@ -84,7 +72,11 @@ public class fragment_tour extends Fragment implements OnClickItem {
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), list);
         adapter.setOnClickItem(this);
         rvTour.setAdapter(adapter);
-        return v;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_main;
     }
 
     @Override

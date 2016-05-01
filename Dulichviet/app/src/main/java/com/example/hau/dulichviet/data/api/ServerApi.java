@@ -1,7 +1,7 @@
 package com.example.hau.dulichviet.data.api;
 
-import com.example.hau.dulichviet.Models.DataCategory;
-import com.example.hau.dulichviet.Models.DataPlace;
+import com.example.hau.dulichviet.models.DataCategory;
+import com.example.hau.dulichviet.models.DataPlace;
 
 import retrofit.http.GET;
 import rx.Observable;
