@@ -45,13 +45,10 @@ public class MapTour extends AppCompatActivity {
         dialog.setCancelable(true);
         dialog.show();
         map=((MapFragment)getFragmentManager().findFragmentById(R.id.map)).getMap();
-        map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-            @Override
-            public void onMapLoaded() {
-                dialog.dismiss();
-                createMarker();
+        map.setOnMapLoadedCallback(() -> {
+            dialog.dismiss();
+            createMarker();
 
-            }
         });
         map.getUiSettings().isZoomControlsEnabled();
         map.setMyLocationEnabled(true);
@@ -61,7 +58,7 @@ public class MapTour extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(false);
     }
     public void createMarker(){
-        LatLng latLng=new LatLng(Double.parseDouble(place.getLatitude()),Double.parseDouble( place.getLongitude()));
+        LatLng latLng=new LatLng(Double.parseDouble(place.latitude),Double.parseDouble( place.longitude));
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -73,7 +70,7 @@ public class MapTour extends AppCompatActivity {
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         MarkerOptions option=new MarkerOptions();
         option.position(latLng);
-        option.icon(BitmapDescriptorFactory.fromResource(ImageHelper.getIconMarker(Integer.parseInt(place.getCategory_id()))));
+        option.icon(BitmapDescriptorFactory.fromResource(ImageHelper.getIconMarker(Integer.parseInt(place.category_id))));
         Marker currentMarker= map.addMarker(option);
         map.setInfoWindowAdapter(new AdapterInfoWindow(this,place));
         currentMarker.showInfoWindow();

@@ -80,7 +80,7 @@ public class MainDetail extends AppCompatActivity implements View.OnClickListene
         if (getIntent() != null) {
             if (getIntent().getBundleExtra("bundle") != null) {
                 place = (DataPlace.Place) getIntent().getBundleExtra("bundle").getSerializable("data");
-                new GetDataHtml().execute(place.getShare_link() + "#tab-photo");
+                new GetDataHtml().execute(place.share_link + "#tab-photo");
             }
         }
 
@@ -93,18 +93,15 @@ public class MainDetail extends AppCompatActivity implements View.OnClickListene
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(false);
         toolbarLayout.setCollapsedTitleTextColor(getResources().getColor(R.color.btn_context_menu_normal));
-        nsvDetail.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY > 0) {
-                    fab.hideMenuButton(true);
-                    toolbarLayout.setTitle(place.getName().toUpperCase());
-                    tvNameDetail.setVisibility(View.INVISIBLE);
-                } else {
-                    fab.showMenuButton(true);
-                    toolbarLayout.setTitle("");
-                    tvNameDetail.setVisibility(View.VISIBLE);
-                }
+        nsvDetail.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY > 0) {
+                fab.hideMenuButton(true);
+                toolbarLayout.setTitle(place.name.toUpperCase());
+                tvNameDetail.setVisibility(View.INVISIBLE);
+            } else {
+                fab.showMenuButton(true);
+                toolbarLayout.setTitle("");
+                tvNameDetail.setVisibility(View.VISIBLE);
             }
         });
         fabShare.setOnClickListener(this);
@@ -114,25 +111,9 @@ public class MainDetail extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.fabMap) {
-            Intent it =new Intent(MainDetail.this,MapTour.class);
-            Bundle bundle =new Bundle();
-            bundle.putSerializable("data",place);
-            it.putExtra("bundle",bundle);
-            startActivity(it);
 
         } else if (v.getId() == R.id.fabShare) {
-        //    if (Networking.isCheckConnect(this))
-                Share.shareURL(place.getShare_link(), this);
-//            else
-//            {
-//                new MaterialDialog.Builder(this)
-//                        .title(null)
-//                        .content("Điện thoại của bạn hiện giờ không có internet.")
-//                        .positiveText("OK")
-//                        .negativeColor(Color.BLUE)
-//                        .backgroundColor(Color.WHITE)
-//                        .show();
-//            }
+                Share.shareURL(place.share_link, this);
 
         }
 
@@ -166,13 +147,11 @@ public class MainDetail extends AppCompatActivity implements View.OnClickListene
         indicator.setRadius(5 * density);
         NUM_PAGES = images.size();
         final Handler handler = new Handler();
-        final Runnable Update = new Runnable() {
-            public void run() {
-                if (currentPage == NUM_PAGES) {
-                    currentPage = 0;
-                }
-                mPager.setCurrentItem(currentPage++, true);
+        final Runnable Update = () -> {
+            if (currentPage == NUM_PAGES) {
+                currentPage = 0;
             }
+            mPager.setCurrentItem(currentPage++, true);
         };
         Timer swipeTimer = new Timer();
         swipeTimer.schedule(new TimerTask() {
@@ -203,11 +182,11 @@ public class MainDetail extends AppCompatActivity implements View.OnClickListene
     }
 
     public void setData() {
-        tvNameDetail.setText(place.getName().toUpperCase());
-        tvAddressDetail.setText(place.getAddress());
-        tvContentDetail.setText(Html.fromHtml(place.getDescription()));
-        if (place.getHowtogo().length() > 0) {
-            tvGoto.setText(Html.fromHtml(place.getHowtogo()));
+        tvNameDetail.setText(place.name.toUpperCase());
+        tvAddressDetail.setText(place.address);
+        tvContentDetail.setText(Html.fromHtml(place.description));
+        if (place.howtogo.length() > 0) {
+            tvGoto.setText(Html.fromHtml(place.howtogo));
         } else {
             llGoto.setVisibility(View.INVISIBLE);
         }

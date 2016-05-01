@@ -19,6 +19,8 @@ import com.example.hau.dulichviet.R;
 import com.example.hau.dulichviet.ui.base.BaseActivity;
 import com.example.hau.dulichviet.ui.detail_tour.MainDetail;
 
+import org.parceler.Parcels;
+
 import butterknife.Bind;
 
 /**
@@ -62,11 +64,11 @@ public class SearchTour extends BaseActivity implements View.OnClickListener {
     }
 
     private void setData() {
-        Glide.with(this).load(Constants.PICASSO + place.getImage_id() + Constants.ORIGIN1).override(width, height).centerCrop().into(ivTour);
-        txtName.setText(place.getName().toUpperCase());
-        String address = place.getAddress();
+        Glide.with(this).load(Constants.PICASSO + place.image_id + Constants.ORIGIN1).override(width, height).centerCrop().into(ivTour);
+        txtName.setText(place.name.toUpperCase());
+        String address = place.address;
         txtAddress.setText(Html.fromHtml(address));
-        String content = place.getDescription();
+        String content = place.description;
         txtContent.setText(Html.fromHtml(content));
         btnMap.setOnClickListener(this);
         btnShare.setOnClickListener(this);
@@ -82,9 +84,7 @@ public class SearchTour extends BaseActivity implements View.OnClickListener {
 
         } else if (v.getId() == R.id.btnReadMore) {
             Intent it = new Intent(this, MainDetail.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("data",place);
-            it.putExtra("bundle", bundle);
+            it.putExtra("data", Parcels.wrap(place));
             startActivity(it);
 
         }

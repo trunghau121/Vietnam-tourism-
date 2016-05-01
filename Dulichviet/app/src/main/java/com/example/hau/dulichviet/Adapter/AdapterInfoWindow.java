@@ -51,11 +51,11 @@ public class AdapterInfoWindow implements GoogleMap.InfoWindowAdapter {
     public View getInfoContents(Marker marker) {
         View v = this.context.getLayoutInflater().inflate(R.layout.custom_infowindow, null);
         MyViewHolder holder =new MyViewHolder(v);
-        holder.Load(Constants.PICASSO + place.getImage_id() + Constants.ORIGIN0);
-        holder.txtTitle.setText(place.getName().toUpperCase());
-        String address = place.getAddress();
+        holder.Load(Constants.PICASSO + place.image_id + Constants.ORIGIN0);
+        holder.txtTitle.setText(place.name.toUpperCase());
+        String address = place.address;
         holder.txtLocation.setText(Html.fromHtml(address));
-        String content = place.getDescription();
+        String content = place.description;
         holder.txtDetail.setText(Html.fromHtml(content));
         return v;
     }

@@ -2,6 +2,8 @@ package com.example.hau.dulichviet.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 
 
@@ -16,41 +18,17 @@ public class DataCategory {
     public void setData(ArrayList<Category> data) {
         this.data = data;
     }
+    @Parcel
     public static class Category{
 
         @SerializedName("id")
-        private String id;
+        public String id;
         @SerializedName("name")
-        private String name;
+        public String name;
         @SerializedName("image_id")
-        private String image_id;
-
+        public String image_id;
 
         public Category() {
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getImage_id() {
-            return image_id;
-        }
-
-        public void setImage_id(String image_id) {
-            this.image_id = image_id;
         }
     }
 }

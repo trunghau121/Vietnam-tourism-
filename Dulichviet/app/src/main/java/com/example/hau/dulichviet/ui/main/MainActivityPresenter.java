@@ -3,12 +3,16 @@ package com.example.hau.dulichviet.ui.main;
 import android.support.annotation.NonNull;
 
 import com.example.hau.dulichviet.Dependencies;
-import com.example.hau.dulichviet.models.DataCategory;
-import com.example.hau.dulichviet.models.DataPlace;
+import com.example.hau.dulichviet.models.database.Category;
+import com.example.hau.dulichviet.models.database.Place;
 import com.example.hau.dulichviet.ui.base.MvpView;
 import com.example.hau.dulichviet.ui.base.Presenter;
 import com.example.hau.dulichviet.data.api.ServerApi;
+import com.example.hau.dulichviet.utils.DataMapper;
+import com.example.hau.dulichviet.utils.ViewAnimator;
 
+
+import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -18,14 +22,16 @@ import timber.log.Timber;
  * Created by TRUNGHAU on 5/1/2016.
  */
 public class MainActivityPresenter extends Presenter<MainActivityPresenter.View> {
-    public interface View extends MvpView{
-        public void showLoading();
+    public interface View extends MvpView, ViewAnimator.ViewAnimatorListener {
+        void showLoading();
 
-        public void hideLoading();
+        void hideLoading();
 
-        public void showDataPlace(@NonNull DataPlace places);
+        void showError(int n);
 
-        public void showDataCategory(@NonNull  DataCategory categorys);
+        void showDataPlace(@NonNull List<Place> places);
+
+        void showDataCategory(@NonNull List<Category> category);
     }
 
     private ServerApi serverAPI;
@@ -34,39 +40,48 @@ public class MainActivityPresenter extends Presenter<MainActivityPresenter.View>
         this.serverAPI = Dependencies.getServerApi();
     }
 
-    public void getDataPlace(){
+    public void getDataPlace() {
         final View view = view();
-        if (view != null){
-            view.showLoading();
-        }
-
         serverAPI.getService()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dataPlace -> {
-                            if (view != null){
-                                view.showDataPlace(dataPlace);
+                            DataMapper.parsePlace(dataPlace.getData());
+                            if (view != null) {
+                                view.hideLoading();
+                                view.showDataPlace(Place.all());
                             }
                         }
                         , throwable -> {
                             Timber.d(throwable.getMessage());
-                            if (view != null){
+                            if (view != null) {
                                 view.hideLoading();
+                                view.showError(1);
                             }
                         }
                 );
     }
-    public void getDataCategory(){
+
+
+    public void getDataCategory() {
         final View view = view();
+        if (view != null) {
+            view.showLoading();
+        }
         serverAPI.getCategory()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dataCategory -> {
-                    if (view != null){
-                        view.showDataCategory(dataCategory);
-                    }
+                    DataMapper.parseCategory(dataCategory.getData());
+                            if (view != null) {
+                                view.showDataCategory(Category.all());
+                            }
                         }, throwable -> {
                             Timber.d(throwable.getMessage());
+                            if (view != null) {
+                                view.hideLoading();
+                                view.showError(0);
+                            }
                         }
                 );
     }

@@ -1,5 +1,6 @@
 package com.example.hau.dulichviet.ui.main;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -13,15 +14,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.hau.dulichviet.Dependencies;
 import com.example.hau.dulichviet.interfaces.Resourceble;
 import com.example.hau.dulichviet.models.DataCategory;
 import com.example.hau.dulichviet.models.DataPlace;
 import com.example.hau.dulichviet.models.SlideMenuItem;
+import com.example.hau.dulichviet.models.database.Category;
+import com.example.hau.dulichviet.models.database.Place;
 import com.example.hau.dulichviet.network.Networking;
 import com.example.hau.dulichviet.R;
+import com.example.hau.dulichviet.ui.dialog.DialogFactory;
 import com.example.hau.dulichviet.utils.ViewAnimator;
 import com.example.hau.dulichviet.data.api.ServerApi;
 import com.example.hau.dulichviet.ui.base.BaseActivity;
@@ -33,66 +37,45 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import timber.log.Timber;
 
 
-public class MainActivity extends BaseActivity implements ViewAnimator.ViewAnimatorListener,MainActivityPresenter.View {
+public class MainActivity extends BaseActivity implements MainActivityPresenter.View {
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    @Bind(R.id.toolbar) Toolbar toolbar;
-    @Bind(R.id.left_drawer) LinearLayout leftDrawer;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.left_drawer)
+    LinearLayout leftDrawer;
     private ActionBarDrawerToggle drawerToggle;
     private List<SlideMenuItem> list = new ArrayList<>();
     private ViewAnimator viewAnimator;
-    public static ArrayList<DataPlace.Place> arrayPlace = new ArrayList<DataPlace.Place>();
-    public static ArrayList<DataCategory.Category> arrayCategory = new ArrayList<DataCategory.Category>();
-    MaterialDialog dialog;
+    private  List<Place> places = new ArrayList<>();
+    private  List<Category> categories = new ArrayList<>();
+    private ProgressDialog dialog;
     private ServerApi serverApi;
+    private MainActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        dialog = DialogFactory.createLoadingDialog(this, "Đang tải dữ liệu ...");
+        presenter = new MainActivityPresenter();
+        presenter.bindView(this);
         serverApi = Dependencies.getServerApi();
+        createMenuList();
+        setActionBar();
         getPlaceFromService();
     }
 
     private void getPlaceFromService() {
 
         if (Networking.isCheckConnect(this)) {
-            dialog = new MaterialDialog.Builder(this)
-                    .title(null)
-                    .content("Đang tải dữ liệu ...")
-                    .progress(true, 0)
-                    .show();
-
-            serverApi.getService()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(dataPlace -> {
-                                arrayPlace = dataPlace.getData();
-                                setActionBar();
-                                comitFragment(1);
-                                createMenuList();
-                                dialog.dismiss();
-                            }
-                            , throwable -> {
-                                Timber.d(throwable.getMessage());
-                                dialog.dismiss();
-                            }
-                    );
-
+            presenter.getDataCategory();
+            presenter.getDataPlace();
         } else {
-            new MaterialDialog.Builder(this)
-                    .content("Không có internet.Vui lòng kiểm tra lại!")
-                    .positiveText("OK")
-                    .contentColor(Color.BLACK)
-                    .positiveColor(Color.BLUE)
-                    .backgroundColor(Color.WHITE)
-                    .show();
+            DialogFactory.showTopPopup(getContext(),"No Internet Connection.","Please check your internet connection and try again");
         }
     }
 
@@ -186,11 +169,6 @@ public class MainActivity extends BaseActivity implements ViewAnimator.ViewAnima
     }
 
     private void comitFragment(int category_id) {
-        for (int i = 0; i < arrayCategory.size(); i++) {
-            if (Integer.parseInt(arrayCategory.get(i).getId()) == category_id) {
-                toolbar.setTitle(arrayCategory.get(i).getName().toUpperCase());
-            }
-        }
         Fragment fr = new FragmentTour();
         Bundle bundle = new Bundle();
         bundle.putInt("category_id", category_id);
@@ -212,22 +190,37 @@ public class MainActivity extends BaseActivity implements ViewAnimator.ViewAnima
 
     @Override
     public void showLoading() {
-
+        dialog.show();
     }
 
     @Override
     public void hideLoading() {
-
+        dialog.dismiss();
     }
 
     @Override
-    public void showDataPlace(@NonNull DataPlace places) {
-
+    public void showError(int n) {
+        if (n == 0) {
+            Toast.makeText(this, "Không thể tải dữ liệu danh mục.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Không thể tải dữ liệu du lịch.", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
-    public void showDataCategory(@NonNull DataCategory categorys) {
+    public void showDataPlace(@NonNull List<Place> places) {
+        this.places = places;
+        comitFragment(1);
+    }
 
+    @Override
+    public void showDataCategory(@NonNull List<Category> category) {
+        categories = category;
+        for (int i = 0; i < categories.size(); i++) {
+            if (Integer.parseInt(categories.get(i).id) == 1) {
+                toolbar.setTitle(categories.get(i).name.toUpperCase());
+            }
+        }
     }
 
     @Override

@@ -14,10 +14,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.hau.dulichviet.Constants;
 import com.example.hau.dulichviet.interfaces.OnClickItem;
-import com.example.hau.dulichviet.models.DataPlace;
 import com.example.hau.dulichviet.R;
+import com.example.hau.dulichviet.models.database.Place;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,7 +27,7 @@ import butterknife.ButterKnife;
  * Created by HAU on 11/16/2015.
  */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
-    private ArrayList<DataPlace.Place> places;
+    private List<Place> places;
     private LayoutInflater inflater;
     private Context mContext;
     private float scale;
@@ -34,7 +35,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private int height;
     private OnClickItem clickItem;
 
-    public RecyclerViewAdapter(Context mContext, ArrayList<DataPlace.Place> places) {
+    public RecyclerViewAdapter(Context mContext, List<Place> places) {
         this.mContext = mContext;
         this.inflater = LayoutInflater.from(mContext);
         this.places = places;
@@ -52,13 +53,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Glide.with(mContext).load(Constants.PICASSO + places.get(position).getImage_id() + Constants.ORIGIN1).centerCrop().placeholder(R.drawable.image_default).into(holder.ivTour);
-//        String url =Constant.PICASSO + places.get(position).getImage_id() + Constant.ORIGIN1;
-//        Picasso.with(mContext).load(url).placeholder(R.drawable.image_default).error(R.drawable.image_default).fit().into(holder.ivTour);
-        holder.txtName.setText(places.get(position).getName().toUpperCase());
-        String address = places.get(position).getAddress();
+        Glide.with(mContext).load(Constants.PICASSO + places.get(position).image_id + Constants.ORIGIN1).centerCrop().placeholder(R.drawable.image_default).into(holder.ivTour);
+        holder.txtName.setText(places.get(position).name.toUpperCase());
+        String address = places.get(position).address;
         holder.txtAddress.setText(Html.fromHtml(address));
-        String content = places.get(position).getDescription();
+        String content = places.get(position).description;
         holder.txtContent.setText(Html.fromHtml(content));
     }
 

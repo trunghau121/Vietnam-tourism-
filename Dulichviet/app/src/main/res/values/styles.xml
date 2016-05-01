@@ -30,4 +30,15 @@
         <item name="android:shadowRadius">3</item>
     </style>
 
+    <style name="None"/>
+
+    <style name="Widget.dulichviet.ProgressBar" parent="None">
+        <item name="android:indeterminateDrawable">@drawable/progress_indeterminate</item>
+        <item name="android:indeterminateOnly">true</item>
+        <item name="android:indeterminateBehavior">repeat</item>
+        <item name="android:indeterminateDuration">900</item>
+        <item name="android:maxWidth">36dp</item>
+        <item name="android:maxHeight">36dp</item>
+    </style>
+
 </resources>

@@ -8,6 +8,12 @@ import android.content.pm.Signature;
 import android.support.multidex.MultiDex;
 import android.util.Base64;
 import android.util.Log;
+
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Configuration;
+import com.example.hau.dulichviet.models.database.Category;
+import com.example.hau.dulichviet.models.database.Place;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -18,50 +24,35 @@ import timber.log.Timber;
  */
 public class MyApplication extends Application {
     public static boolean activityVisible;
+
     @Override
     public void onCreate() {
         super.onCreate();
         Dependencies.init();
-        if (BuildConfig.DEBUG){
+        initActiveAndroid();
+        if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
-        printHashKey();
     }
 
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
-    }
-
-    public static boolean isActivityVisible() {
-        return activityVisible;
-    }
-    public static void activityResumed() {
-        activityVisible = true;
-    }
-
-    public static void activityPaused() {
-        activityVisible = false;
+    public void onTerminate() {
+        super.onTerminate();
+        ActiveAndroid.dispose();
     }
 
 
-    public void printHashKey(){
-        // Add code to print out the key hash
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.example.hau.dulichviet",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
+    @SuppressWarnings("unchecked")
+    private void initActiveAndroid() {
 
-        } catch (NoSuchAlgorithmException e) {
+        Configuration.Builder configurationBuilder = new Configuration.Builder(this);
 
-        }
+        // Setup ActiveAndroid database model
+        configurationBuilder.addModelClasses(Category.class);
+        configurationBuilder.addModelClasses(Place.class);
 
+        ActiveAndroid.initialize(configurationBuilder.create());
+        ActiveAndroid.setLoggingEnabled(false);
     }
+
 }
