@@ -24,10 +24,13 @@
             app:theme="@style/ToolbarStyle"
             app:expandedTitleMarginEnd="64dp">
 
-            <include
-                layout="@layout/slider_image"
+            <ImageView
+                android:id="@+id/imgTour"
+                android:scaleType="centerCrop"
                 android:transitionName="element1"
-                app:layout_collapseMode="parallax"></include>
+                app:layout_collapseMode="parallax"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></ImageView>
 
 
 

@@ -1,12 +1,12 @@
 package com.example.hau.dulichviet.ui.detail_tour;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,31 +14,29 @@ import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.hau.dulichviet.adapter.AdapterSliderImage;
-import com.example.hau.dulichviet.ui.map_tour.MapTour;
+import com.bumptech.glide.Glide;
+import com.example.hau.dulichviet.Constants;
 import com.example.hau.dulichviet.models.DataPlace;
 import com.example.hau.dulichviet.models.ParseHtml;
 import com.example.hau.dulichviet.R;
+import com.example.hau.dulichviet.ui.base.BaseActivity;
+import com.example.hau.dulichviet.ui.search_tour.SearchTourPresenter;
 import com.example.hau.dulichviet.utils.Share;
 import com.facebook.CallbackManager;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.viewpagerindicator.CirclePageIndicator;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by HAU on 11/28/2015.
  */
-public class MainDetail extends AppCompatActivity implements View.OnClickListener {
+public class MainDetail extends BaseActivity implements MainDetailPresenter.View {
     @Bind(R.id.tvAddressDetail)
     TextView tvAddressDetail;
     @Bind(R.id.tvNameDetail)
@@ -61,29 +59,19 @@ public class MainDetail extends AppCompatActivity implements View.OnClickListene
     FloatingActionButton fabShare;
     @Bind(R.id.fabMap)
     FloatingActionButton fabMap;
-    @Bind(R.id.indicator)
-    CirclePageIndicator indicator;
-    @Bind(R.id.pager)
-    ViewPager mPager;
     DataPlace.Place place;
-    private static int currentPage = 0;
-    private static int NUM_PAGES = 0;
-    CallbackManager callbackManager;
-    Share share;
+    @Bind(R.id.imgTour)
+    ImageView imgTour;
+    private MainDetailPresenter presenter;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_tour);
-        ButterKnife.bind(this);
-        if (getIntent() != null) {
-            if (getIntent().getBundleExtra("bundle") != null) {
-                place = (DataPlace.Place) getIntent().getBundleExtra("bundle").getSerializable("data");
-                new GetDataHtml().execute(place.share_link + "#tab-photo");
-            }
-        }
-
+        presenter = new MainDetailPresenter();
+        presenter.bindView(this);
+        presenter.getIntent(getIntent());
     }
 
 
@@ -119,69 +107,11 @@ public class MainDetail extends AppCompatActivity implements View.OnClickListene
 
     }
 
-    class GetDataHtml extends AsyncTask<String, ArrayList<String>, Void> {
-
-        @Override
-        protected Void doInBackground(String... params) {
-
-            ArrayList<String> urls = new ArrayList<>();
-         //   if (Networking.isCheckConnect(getApplication()))
-                urls = ParseHtml.getImageHtml(params[0]);
-            publishProgress(urls);
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(ArrayList<String>... values) {
-            createSliderImage(values[0]);
-            Init();
-            setData();
-            super.onProgressUpdate(values);
-        }
-    }
-
-    public void createSliderImage(ArrayList<String> images) {
-        mPager.setAdapter(new AdapterSliderImage(getApplicationContext(), images));
-        indicator.setViewPager(mPager);
-        final float density = getResources().getDisplayMetrics().density;
-        indicator.setRadius(5 * density);
-        NUM_PAGES = images.size();
-        final Handler handler = new Handler();
-        final Runnable Update = () -> {
-            if (currentPage == NUM_PAGES) {
-                currentPage = 0;
-            }
-            mPager.setCurrentItem(currentPage++, true);
-        };
-        Timer swipeTimer = new Timer();
-        swipeTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(Update);
-            }
-        }, 2000, 2000);
-
-        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            @Override
-            public void onPageSelected(int position) {
-                currentPage = position;
-
-            }
-
-            @Override
-            public void onPageScrolled(int pos, float arg1, int arg2) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int pos) {
-
-            }
-        });
-    }
-
-    public void setData() {
+    @Override
+    public void showDataPlace(DataPlace.Place place) {
+        this.place = place;
+        Init();
+        Glide.with(this).load(Constants.PICASSO + place.image_id + Constants.ORIGIN1).centerCrop().into(imgTour);
         tvNameDetail.setText(place.name.toUpperCase());
         tvAddressDetail.setText(place.address);
         tvContentDetail.setText(Html.fromHtml(place.description));
@@ -191,6 +121,12 @@ public class MainDetail extends AppCompatActivity implements View.OnClickListene
             llGoto.setVisibility(View.INVISIBLE);
         }
     }
+
+    @Override
+    public Context getContext() {
+        return null;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
