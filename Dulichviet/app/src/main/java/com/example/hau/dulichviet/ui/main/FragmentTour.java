@@ -18,20 +18,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.example.hau.dulichviet.adapter.AdapterAutoComplete;
 import com.example.hau.dulichviet.adapter.RecyclerViewAdapter;
 import com.example.hau.dulichviet.models.database.Place;
 import com.example.hau.dulichviet.ui.base.BaseFragment;
-import com.example.hau.dulichviet.ui.detail_tour.MainDetail;
 import com.example.hau.dulichviet.ui.map_tour.MapTour;
-import com.example.hau.dulichviet.models.DataPlace;
 import com.example.hau.dulichviet.R;
 import com.example.hau.dulichviet.utils.Share;
-
-import org.parceler.Parcels;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -43,13 +36,11 @@ import butterknife.Bind;
 public class FragmentTour extends BaseFragment implements FragmentTourPresenter.View {
     @Bind(R.id.rvTour)
     RecyclerView rvTour;
-    private ArrayList<DataPlace.Place> arrayPlace = new ArrayList<>();
-    private ArrayList<DataPlace.Place> list = new ArrayList<>();
-    private List<Place> listSuggestion = new ArrayList<>();
     private SearchView searchView;
     private MatrixCursor c = new MatrixCursor(new String[]{BaseColumns._ID, "Name"});
     private AdapterAutoComplete autoComplete;
     private FragmentTourPresenter presenter;
+    private RecyclerViewAdapter adapter;
 
     @Nullable
     @Override
@@ -58,12 +49,14 @@ public class FragmentTour extends BaseFragment implements FragmentTourPresenter.
         setHasOptionsMenu(true);
         presenter = new FragmentTourPresenter();
         presenter.bindView(this);
+        adapter = new RecyclerViewAdapter(getActivity().getLayoutInflater());
+        adapter.setOnClickItem(this);
+        rvTour.setAdapter(adapter);
         autoComplete = new AdapterAutoComplete(getActivity(), c);
         presenter.getIntent(getArguments());
-        if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             rvTour.setLayoutManager(new GridLayoutManager(getActivity(), 1));
-        }
-        else{
+        } else {
             rvTour.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         }
     }
@@ -74,33 +67,18 @@ public class FragmentTour extends BaseFragment implements FragmentTourPresenter.
     }
 
     @Override
-    public void shareClick(View v, int position) {
-      //  if (Networking.isCheckConnect(getActivity()))
-            Share.shareURL(list.get(position).share_link,getActivity());
-//        else
-//        {
-//            new MaterialDialog.Builder(getActivity())
-//                    .title(null)
-//                    .content("Điện thoại của bạn hiện giờ không có internet.")
-//                    .positiveText("OK")
-//                    .negativeColor(Color.BLUE)
-//                    .backgroundColor(Color.WHITE)
-//                    .show();
-//        }
-
+    public void shareClick(View v, Place place) {
+        Share.shareURL(place.share_link, getActivity());
     }
 
     @Override
-    public void readMoreClick(View v, int position) {
-        Intent it = new Intent(getActivity(), MainDetail.class);
-        it.putExtra("data", Parcels.wrap(arrayPlace.get(position)));
-        getActivity().startActivity(it);
-
+    public void readMoreClick(View v, Place place) {
+        presenter.openDetailTour(place);
     }
 
     @Override
-    public void mapClick(View v, int position) {
-        Intent it =new Intent(getActivity(),MapTour.class);
+    public void mapClick(View v, Place place) {
+        Intent it = new Intent(getActivity(), MapTour.class);
         startActivity(it);
 
     }
@@ -126,8 +104,6 @@ public class FragmentTour extends BaseFragment implements FragmentTourPresenter.
 
             @Override
             public boolean onSuggestionClick(int position) {
-                searchView.setQuery(listSuggestion.get(position).name,
-                        true);
                 presenter.openSearchTour(position);
                 return true;
             }
@@ -150,7 +126,6 @@ public class FragmentTour extends BaseFragment implements FragmentTourPresenter.
     }
 
 
-
     @Override
     public void showDataSearch(MatrixCursor c) {
         autoComplete.changeCursor(c);
@@ -158,8 +133,6 @@ public class FragmentTour extends BaseFragment implements FragmentTourPresenter.
 
     @Override
     public void showDataPlace(@NonNull List<Place> places) {
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getActivity(), places);
-        adapter.setOnClickItem(this);
-        rvTour.setAdapter(adapter);
+        adapter.setDataSource(places);
     }
 }

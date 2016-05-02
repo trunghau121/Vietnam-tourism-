@@ -1,5 +1,6 @@
 package com.example.hau.dulichviet.ui.search_tour;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.hau.dulichviet.Constants;
 import com.example.hau.dulichviet.models.DataPlace;
 import com.example.hau.dulichviet.R;
+import com.example.hau.dulichviet.models.database.Place;
 import com.example.hau.dulichviet.ui.base.BaseActivity;
 import com.example.hau.dulichviet.ui.detail_tour.MainDetail;
 
@@ -26,7 +28,7 @@ import butterknife.Bind;
 /**
  * Created by HAU on 12/2/2015.
  */
-public class SearchTour extends BaseActivity implements View.OnClickListener {
+public class SearchTour extends BaseActivity implements SearchTourPresenter.View {
     @Bind(R.id.tvName)
     TextView txtName;
     @Bind(R.id.tvContent)
@@ -41,10 +43,10 @@ public class SearchTour extends BaseActivity implements View.OnClickListener {
     ImageButton btnShare;
     @Bind(R.id.btnReadMore)
     Button btnReadMore;
-    DataPlace.Place place;
     private float scale;
     private int width;
     private int height;
+    private SearchTourPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,28 +54,11 @@ public class SearchTour extends BaseActivity implements View.OnClickListener {
         setContentView(R.layout.custom_list_tour);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(false);
-        scale = this.getResources().getDisplayMetrics().density;
-        width = this.getResources().getDisplayMetrics().widthPixels - (int) (14 * scale + 0.5f);
-        height = (width / 16) * 9;
-        if (getIntent() != null) {
-            if (getIntent().getBundleExtra("bundle") != null) {
-                place = (DataPlace.Place) getIntent().getBundleExtra("bundle").getSerializable("data");
-                setData();
-            }
-        }
+        presenter = new SearchTourPresenter();
+        presenter.bindView(this);
+        presenter.getIntent(getIntent());
     }
 
-    private void setData() {
-        Glide.with(this).load(Constants.PICASSO + place.image_id + Constants.ORIGIN1).override(width, height).centerCrop().into(ivTour);
-        txtName.setText(place.name.toUpperCase());
-        String address = place.address;
-        txtAddress.setText(Html.fromHtml(address));
-        String content = place.description;
-        txtContent.setText(Html.fromHtml(content));
-        btnMap.setOnClickListener(this);
-        btnShare.setOnClickListener(this);
-        btnReadMore.setOnClickListener(this);
-    }
 
     @Override
     public void onClick(View v) {
@@ -83,9 +68,7 @@ public class SearchTour extends BaseActivity implements View.OnClickListener {
         } else if (v.getId() == R.id.btnShare) {
 
         } else if (v.getId() == R.id.btnReadMore) {
-            Intent it = new Intent(this, MainDetail.class);
-            it.putExtra("data", Parcels.wrap(place));
-            startActivity(it);
+            presenter.openDetailTour();
 
         }
     }
@@ -102,5 +85,23 @@ public class SearchTour extends BaseActivity implements View.OnClickListener {
             finish();
         }
         return true;
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public void showDataPlace(DataPlace.Place place) {
+        Glide.with(this).load(Constants.PICASSO + place.image_id + Constants.ORIGIN1).centerCrop().into(ivTour);
+        txtName.setText(place.name.toUpperCase());
+        String address = place.address;
+        txtAddress.setText(Html.fromHtml(address));
+        String content = place.description;
+        txtContent.setText(Html.fromHtml(content));
+        btnMap.setOnClickListener(this);
+        btnShare.setOnClickListener(this);
+        btnReadMore.setOnClickListener(this);
     }
 }

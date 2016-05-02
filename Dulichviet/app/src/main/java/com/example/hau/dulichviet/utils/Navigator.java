@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.example.hau.dulichviet.models.DataPlace;
 import com.example.hau.dulichviet.models.database.Place;
+import com.example.hau.dulichviet.ui.detail_tour.MainDetail;
 import com.example.hau.dulichviet.ui.search_tour.SearchTour;
 
 import org.parceler.Parcels;
@@ -15,9 +16,15 @@ import org.parceler.Parcels;
  */
 public class Navigator {
 
-    public static void openSearchTour(Context context , Place place){
+    public static void openSearchTour(Context context , DataPlace.Place place){
         Intent it = new Intent(context, SearchTour.class);
         it.putExtra("data", Parcels.wrap(place));
         context.startActivity(it);
     }
+    public static void openDetailTour(Context context ,  DataPlace.Place place){
+        Intent it = new Intent(context, MainDetail.class);
+        it.putExtra("data", Parcels.wrap(place));
+        context.startActivity(it);
+    }
+
 }

@@ -9,6 +9,7 @@ import com.example.hau.dulichviet.interfaces.OnClickItem;
 import com.example.hau.dulichviet.models.database.Place;
 import com.example.hau.dulichviet.ui.base.MvpView;
 import com.example.hau.dulichviet.ui.base.Presenter;
+import com.example.hau.dulichviet.utils.DataMapper;
 import com.example.hau.dulichviet.utils.Navigator;
 
 import java.util.ArrayList;
@@ -54,7 +55,14 @@ public class FragmentTourPresenter extends Presenter<FragmentTour>{
     public void openSearchTour(int position){
         final View view = view();
         if (view != null) {
-            Navigator.openSearchTour(view.getContext(), places.get(position));
+            Navigator.openSearchTour(view.getContext(), DataMapper.getPlace(listSuggestion.get(position)));
+        }
+    }
+
+    public void openDetailTour(Place place){
+        final View view = view();
+        if (view != null) {
+            Navigator.openDetailTour(view.getContext(), DataMapper.getPlace(place));
         }
     }
 

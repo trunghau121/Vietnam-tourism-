@@ -15,7 +15,7 @@ public class DataMapper {
     public static void parseCategory(List<DataCategory.Category> categories) {
         ActiveAndroid.beginTransaction();
         Category.deleteAllCategory();
-        for (DataCategory.Category category : categories){
+        for (DataCategory.Category category : categories) {
             Category data = new Category();
             data.id = category.id;
             data.name = category.name;
@@ -27,10 +27,21 @@ public class DataMapper {
 
     }
 
+    public static DataCategory.Category getCategory(Category category) {
+        DataCategory.Category data = new DataCategory.Category();
+        if (category != null) {
+            data.id = category.id;
+            data.name = category.name;
+            data.image_id = category.image_id;
+        }
+        return data;
+    }
+
+
     public static void parsePlace(List<DataPlace.Place> places) {
         ActiveAndroid.beginTransaction();
         Place.deleteCategoryPlace();
-        for (DataPlace.Place place : places){
+        for (DataPlace.Place place : places) {
             Place data = new Place();
             data.id = place.id;
             data.share_link = place.share_link;
@@ -47,16 +58,45 @@ public class DataMapper {
             data.rating = place.rating;
             data.rate_real = place.rate_real;
             data.review_number = place.review_number;
-            data.checkin_number= place.checkin_number;
-            data.checkin_number= place.checkin_number;
-            data.checkin_number= place.checkin_number;
-            data.recommend_number= place.recommend_number;
-            data.report_number= place.report_number;
-            data.approve= place.approve;
+            data.checkin_number = place.checkin_number;
+            data.checkin_number = place.checkin_number;
+            data.checkin_number = place.checkin_number;
+            data.recommend_number = place.recommend_number;
+            data.report_number = place.report_number;
+            data.approve = place.approve;
             data.save();
         }
         ActiveAndroid.setTransactionSuccessful();
         ActiveAndroid.endTransaction();
+
+    }
+
+    public static DataPlace.Place getPlace(Place place) {
+        DataPlace.Place data = new DataPlace.Place();
+        if (place != null) {
+            data.id = place.id;
+            data.share_link = place.share_link;
+            data.name = place.name;
+            data.address = place.address;
+            data.latitude = place.latitude;
+            data.longitude = place.longitude;
+            data.short_description = place.short_description;
+            data.description = place.description;
+            data.howtogo = place.howtogo;
+            data.category_id = place.category_id;
+            data.image_id = place.image_id;
+            data.hexcode = place.hexcode;
+            data.rating = place.rating;
+            data.rate_real = place.rate_real;
+            data.review_number = place.review_number;
+            data.checkin_number = place.checkin_number;
+            data.checkin_number = place.checkin_number;
+            data.checkin_number = place.checkin_number;
+            data.recommend_number = place.recommend_number;
+            data.report_number = place.report_number;
+            data.approve = place.approve;
+        }
+        return data;
 
     }
 }

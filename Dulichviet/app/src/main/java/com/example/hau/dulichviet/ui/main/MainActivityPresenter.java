@@ -42,6 +42,10 @@ public class MainActivityPresenter extends Presenter<MainActivityPresenter.View>
 
     public void getDataPlace() {
         final View view = view();
+        List<Place> places =Place.all();
+        if (view != null && places != null && places.size() > 0){
+            view.showDataPlace(places);
+        }
         serverAPI.getService()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -67,6 +71,10 @@ public class MainActivityPresenter extends Presenter<MainActivityPresenter.View>
         final View view = view();
         if (view != null) {
             view.showLoading();
+            List<Category> categories =Category.all();
+            if (categories != null && categories.size() > 0){
+                view.showDataCategory(categories);
+            }
         }
         serverAPI.getCategory()
                 .subscribeOn(Schedulers.io())
